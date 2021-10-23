@@ -17,50 +17,47 @@
     
 namespace PlantUml/Puml {
 
+    use PlantUml/Creole.Creole;
 
-    pub enum PumlElement {
-        case PumlText(String)
-        case PumlComment(String)
-        case PumlCreole(Creole)
-    }
-
-    pub enum Creole {
-        case CreoleText(String)
-        case CreoleHCat(Creole, Creole)
-        case CreoleVCat(Creole, Creole)
+    pub enum Puml {
+        case Text(String)
+        case Creole(Creole)
+        case HCat(Puml, Puml)
+        case VCat(Puml, Puml)
     }
 
 
-    pub def renderCreole(doc: Creole): String = 
-        renderCreoleHelper(doc) as & Pure
 
-    def renderCreoleHelper(doc: Creole): String & Impure = 
+    pub def render(doc: Puml): String = 
+        renderHelper(doc) as & Pure
+
+    def renderHelper(doc: Puml): String & Impure = 
         let sb = StringBuilder.new();
-        appendCreole!(sb, doc);
+        appendPuml!(sb, doc);
         StringBuilder.toString(sb)
 
-    def appendCreole!(sb: StringBuilder, doc: Creole): Unit & Impure = match doc {
-        case CreoleText(s) => StringBuilder.appendString!(sb, s) 
-        case CreoleHCat(d1, d2) => { 
-            appendCreole!(sb, d1);
-            appendCreole!(sb, d2)
+    def appendPuml!(sb: StringBuilder, doc: Puml): Unit & Impure = match doc {
+        case Text(s) => StringBuilder.appendString!(sb, s)
+        case Creole(c) => PlantUml/Creole.appendCreole!(sb, c) 
+        case HCat(d1, d2) => { 
+            appendPuml!(sb, d1);
+            appendPuml!(sb, d2)
         }
-        case CreoleVCat(d1, d2) => { 
-            appendCreole!(sb, d1);
+        case VCat(d1, d2) => { 
+            appendPuml!(sb, d1);
             StringBuilder.appendLineSeparator!(sb);
-            appendCreole!(sb, d2)
+            appendPuml!(sb, d2)
         }
     }
+    
+    pub def <!>(x: Puml, y: Puml): Puml = VCat(x, y)
 
-    /// TODO - Creole and Puml in seperate namespaces?
+    pub def text(s: String): Puml = Text(s)
 
-    pub def text(s: String): Creole = CreoleText(s)
+    pub def creole(doc: Creole): Puml = Creole(doc)
 
-    pub def hcat(d1: Creole, d2: Creole): Creole = CreoleHCat(d1, d2)
-    pub def <>(d1: Creole, d2: Creole): Creole = hcat(d1, d2)
-    pub def <<>>(d1: Creole, d2: Creole): Creole = hcat(d1, hcat(text(" "), d2))
 
-    pub def emph(doc: Creole): Creole = CreoleText("//") <> doc <> CreoleText("//")
-    pub def strong(doc: Creole): Creole = CreoleText("**") <> doc <> CreoleText("**")
+    pub def startuml(): Puml = Text("@startuml")
+    pub def enduml(): Puml = Text("@enduml")
 
 }

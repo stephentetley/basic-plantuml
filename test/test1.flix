@@ -11,10 +11,10 @@ def main(_args: Array[String]): Int32 & Impure =
 
 
 def tree1(): Puml = 
-    use PlantUml/Puml.{startsalt, endsalt, braces, text, vsep, treenode};
+    use PlantUml/Puml.{startsalt, endsalt, braces, text, vsep, treenode, tree};
     use PlantUml/Puml.{<!>};
-    let n1 = treenode(1, text("home"));
-    let n2 = treenode(2, text("stephen"));
+    let n1 = treenode(1, text("/home"));
+    let n2 = treenode(2, text("/stephen"));
     startsalt() 
-        <!> braces(None, braces(Some("T"), vsep(n1 :: n2 :: Nil)))
+        <!> braces(None, 0, tree(n1 :: n2 :: Nil))
         <!> endsalt()

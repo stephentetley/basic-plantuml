@@ -19,9 +19,10 @@ namespace PlantUml/Puml {
 
     use PlantUml/Creole.Creole;
 
-    /// Ideally we should track indentation somewhere...
+    /// Track indentation with Group...
     pub enum Puml {
         case Empty
+        case Group(Int32, Puml)
         case Text(String)
         case Creole(Creole)
         case HCat(Puml, Puml)
@@ -35,26 +36,28 @@ namespace PlantUml/Puml {
 
     def renderHelper(doc: Puml): String & Impure = 
         let sb = StringBuilder.new();
-        appendPuml!(sb, doc);
+        appendPuml!(sb, 0, doc);
         StringBuilder.toString(sb)
 
-    def appendPuml!(sb: StringBuilder, doc: Puml): Unit & Impure = match doc {
+    def appendPuml!(sb: StringBuilder, indent: Int32, doc: Puml): Unit & Impure = match doc {
         case Empty => () as & Impure
         case Text(s) => StringBuilder.appendString!(sb, s)
-        case Creole(c) => PlantUml/Creole.appendCreole!(sb, c) 
+        case Creole(c) => PlantUml/Creole.appendCreole!(sb, c)
+        case Group(i, d1) => appendPuml!(sb, indent + i, d1)
         case HCat(d1, d2) => { 
-            appendPuml!(sb, d1);
-            appendPuml!(sb, d2)
+            appendPuml!(sb, indent, d1);
+            appendPuml!(sb, indent, d2)
         }
         case VCat(d1, d2) => { 
-            appendPuml!(sb, d1);
+            appendPuml!(sb, indent, d1);
             StringBuilder.appendLineSeparator!(sb);
-            appendPuml!(sb, d2)
+            StringBuilder.appendString!(sb, String.repeat(" ", indent));
+            appendPuml!(sb, indent, d2)
         }
     }
     
 
-        // ************************************************************************
+    // ************************************************************************
     // List concatenation 
 
     pub def foldPuml(op: (Puml, Puml) -> Puml, docs: List[Puml]): Puml = 
@@ -112,6 +115,8 @@ namespace PlantUml/Puml {
 
     pub def char(c: Char): Puml = Text("${c}")
 
+    pub def group(indent: Int32, body: Puml): Puml = Group(indent, body)
+
     pub def creole(doc: Creole): Puml = Creole(doc)
 
     pub def repeatString(s: String, n: Int32): Puml = 
@@ -134,12 +139,16 @@ namespace PlantUml/Puml {
     pub def treenode(level: Int32, body: Puml): Puml = 
         repeatString("+", level) <<>> body
 
+    pub def tree(nodes: List[Puml]): Puml = 
+        braces(Some("T"), 1, vsep(nodes))
+
+
     pub def startwbs(): Puml = Text("@startwbs")
     pub def endwbd(): Puml = Text("@endwbs")
 
-    pub def braces(symbol: Option[String],  body: Puml): Puml = match symbol { 
-        case Some(s1) => vsep(text("{${s1}") :: body :: text("}") :: Nil)
-        case None => vsep(text("{") :: body :: text("}") :: Nil)
+    pub def braces(symbol: Option[String], indent: Int32, body: Puml): Puml = match symbol { 
+        case Some(s1) => group(indent, text("{${s1}") <!> body) <!> text("}")
+        case None => group(indent, text("{") <!> body) <!> text("}")
     }
 
 }

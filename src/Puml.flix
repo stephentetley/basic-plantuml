@@ -82,6 +82,7 @@ namespace PlantUml/Puml {
     }
 
     pub def vsep(docs: List[Puml]): Puml = foldPuml(x -> y -> x <!> y, docs)
+    pub def hsep(docs: List[Puml]): Puml = foldPuml(x -> y -> x <<>> y, docs)
 
     pub def intersperse(sepa: Puml, docs:List[Puml]): Puml = vsep(punctuate(sepa, docs))
 
@@ -136,12 +137,20 @@ namespace PlantUml/Puml {
     pub def startsalt(): Puml = Text("@startsalt")
     pub def endsalt(): Puml = Text("@endsalt")
 
-    pub def treenode(level: Int32, body: Puml): Puml = 
-        repeatString("+", level) <<>> body
+    pub def treeNode(level: Int32, label: Puml): Puml = 
+        repeatString("+", level) <<>> label
 
     pub def tree(nodes: List[Puml]): Puml = 
         braces(Some("T"), 1, vsep(nodes))
 
+    pub def treeTableHeaders(headers: List[Puml]): Puml = 
+        text("+") <> hsep(punctuate(text(" |"), headers))
+
+    pub def treeTableNode(level: Int32, cells: List[Puml]): Puml = 
+        repeatString("+", level) <<>> hsep(punctuate(text(" |"), cells))
+
+    pub def treeTable(nodes: List[Puml]): Puml = 
+        braces(Some("T"), 1, vsep(nodes))
 
     pub def startwbs(): Puml = Text("@startwbs")
     pub def endwbd(): Puml = Text("@endwbs")

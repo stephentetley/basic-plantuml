@@ -49,6 +49,8 @@ namespace PlantUml/Creole {
     
     pub def text(s: String): Creole = Text(s)
     pub def char(c: Char): Creole = Text("${c}")
+    
+    pub def asText(x: a): Creole with ToString[a] = Text(ToString.toString(x))
 
     pub def hcat(d1: Creole, d2: Creole): Creole = HCat(d1, d2)
     pub def <>(d1: Creole, d2: Creole): Creole = hcat(d1, d2)

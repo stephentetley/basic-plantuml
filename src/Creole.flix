@@ -46,18 +46,50 @@ namespace PlantUml/Creole {
         }
     }
 
-    /// TODO - Creole and Puml in seperate namespaces?
-
+    
     pub def text(s: String): Creole = Text(s)
+    pub def char(c: Char): Creole = Text("${c}")
 
     pub def hcat(d1: Creole, d2: Creole): Creole = HCat(d1, d2)
     pub def <>(d1: Creole, d2: Creole): Creole = hcat(d1, d2)
     pub def <<>>(d1: Creole, d2: Creole): Creole = hcat(d1, hcat(text(" "), d2))
     pub def <!>(x: Creole, y: Creole): Creole = VCat(x, y)
 
-    pub def emph(doc: Creole): Creole = text("//") <> doc <> text("//")
-    pub def strong(doc: Creole): Creole = text("**") <> doc <> text("**")
+    ///
+    /// Enclose the document body between `l` (left) and `r` (right).
+    ///
+    pub def enclose(l: Creole, r: Creole, body: Creole): Creole = l <> body <> r
+
+
+    pub def italics(doc: Creole): Creole = enclose(text("//"), text("//"), doc)
+    pub def bold(doc: Creole): Creole = enclose(text("**"), text("**"), doc)
+    pub def monospaced(doc: Creole): Creole = enclose(text("\"\""), text("\"\""), doc)
+    pub def stroked(doc: Creole): Creole = enclose(text("--"), text("--"), doc)
+    pub def underlined(doc: Creole): Creole = enclose(text("__"), text("__"), doc)
+    pub def waved(doc: Creole): Creole = enclose(text("~~"), text("~~"), doc)
+
+    pub def listItem(doc: Creole): Creole = text("*") <<>> doc
+    pub def subItem(doc: Creole): Creole = text("**") <<>> doc
+
+    pub def numberedListItem(doc: Creole): Creole = text("#") <<>> doc
+    pub def numberedSubItem(doc: Creole): Creole = text("##") <<>> doc
+
+    pub def escaped(doc: Creole): Creole = char('~') <> doc
+
+    pub def hline(): Creole = text("----")
+    pub def doubleLine(): Creole = text("====")
+    pub def strongLine(): Creole = text("____")
+    pub def dottedLine(): Creole = text("....")
+
+    pub def hlineWith(title: String): Creole = text("--${title}--")
+    pub def doubleLineWith(title: String): Creole = text("==${title}==")
+    pub def strongLineWith(title: String): Creole = text("__${title}__")
+    pub def dottedLineWith(title: String): Creole = text("..${title}..")
+
 
     pub def color(name: String): Creole = text("<#${name}>")
+
+    pub def code(body: String): Creole = text("<code>") <!> text(body) <!> text("</code>")
+
 
 }

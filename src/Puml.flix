@@ -51,7 +51,7 @@ namespace PlantUml/Puml {
         case VCat(d1, d2) => { 
             appendPuml!(sb, indent, d1);
             StringBuilder.appendLineSeparator!(sb);
-            StringBuilder.appendString!(sb, String.repeat(" ", indent));
+            StringBuilder.appendString!(sb, String.repeat(indent, " "));
             appendPuml!(sb, indent, d2)
         }
     }
@@ -120,8 +120,8 @@ namespace PlantUml/Puml {
 
     pub def creole(doc: Creole): Puml = Creole(doc)
 
-    pub def repeatString(s: String, n: Int32): Puml = 
-        String.repeat(s, n) |> text
+    pub def repeatString(n: Int32, s: String): Puml = 
+        String.repeat(n, s) |> text
 
     pub def comment(s: String): Puml = 
         String.lines(s) |> List.map(s1 -> text("' ${s1}")) |> vsep
@@ -138,7 +138,7 @@ namespace PlantUml/Puml {
     pub def endsalt(): Puml = Text("@endsalt")
 
     pub def treeNode(level: Int32, label: Puml): Puml = 
-        repeatString("+", level) <<>> label
+        repeatString(level, "+") <<>> label
 
     pub def tree(nodes: List[Puml]): Puml = 
         braces(Some("T"), 1, vsep(nodes))
@@ -147,7 +147,7 @@ namespace PlantUml/Puml {
         text("+") <> hsep(punctuate(text(" |"), headers))
 
     pub def treeTableNode(level: Int32, cells: List[Puml]): Puml = 
-        repeatString("+", level) <<>> hsep(punctuate(text(" |"), cells))
+        repeatString(level, "+") <<>> hsep(punctuate(text(" |"), cells))
 
     pub def treeTable(nodes: List[Puml]): Puml = 
         braces(Some("T"), 1, vsep(nodes))

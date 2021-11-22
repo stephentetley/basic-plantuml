@@ -91,6 +91,8 @@ namespace PlantUml/Creole {
 
     pub def color(name: String): Creole = text("<#${name}>")
 
+    pub def oldColor(name: String): Creole = text("<color:${name}>")
+
     pub def code(body: String): Creole = text("<code>") <!> text(body) <!> text("</code>")
 
 

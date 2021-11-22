@@ -24,7 +24,7 @@ namespace PlantUml/SaltTree {
     use PlantUml/Puml.{Puml};
     use PlantUml/Creole.{Creole};
 
-
+    /// Note - it seems like "new style" colours are not supported in Creole
 
     pub def tree(printer: {printLabel :: a -> Creole}, x: RoseTree[a]): Puml = 
         use PlantUml/Puml.{startsalt, endsalt, braces, tree};

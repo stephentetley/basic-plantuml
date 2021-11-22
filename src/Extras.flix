@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-
+/// Depends on `flix-sandbox`
     
-namespace PlantUml/Extra {
+namespace PlantUml/Extras {
 
     pub type alias PlantUmlArgs = 
         { java :: String        /// "java" / "java.exe"
@@ -28,7 +28,10 @@ namespace PlantUml/Extra {
 
     pub def execPlantUml(args: PlantUmlArgs): Result[Int32, String] & Impure = 
         use Result.flatMap;
-        let tfmt    = "-t${args.format}";
+        let tfmt    = match args.format { 
+            case Some(fmt) => "-t${fmt}"
+            case None => ""
+        };
         let pb      = System/Process.newProcessBuilder(args.java, ["-jar", "${args.plantUmlJar}", tfmt, "${args.sourceFile}"]);
         let* proc   = System/Process.start(pb);
         let* str    = System/Process.getInput(proc, Text/Charset.utf_8());

@@ -27,16 +27,31 @@ namespace PlantUml/Extras {
 
 
     pub def execPlantUml(args: PlantUmlArgs): Result[Int32, String] & Impure = 
-        use Result.flatMap;
         let tfmt    = match args.format { 
             case Some(fmt) => "-t${fmt}"
             case None => ""
         };
-        let pb      = System/Process.newProcessBuilder(args.java, ["-jar", "${args.plantUmlJar}", tfmt, "${args.sourceFile}"]);
+        let args1 = 
+            { cmd = args.java
+            , args = ["-jar", "${args.plantUmlJar}", tfmt, "${args.sourceFile}"]
+            , charset = Text/Charset.utf_8()
+            };
+        process(args1) |> Result.map(x1 -> x1.exitCode)
+
+    /// TODO - to add to System/Process...
+    pub type alias ProcessArgs = 
+        { cmd :: String
+        , args :: Array[String]
+        , charset :: Text.Charset
+        }
+
+
+    pub def process(args: ProcessArgs): Result[{exitCode :: Int32, processResponse :: String}, String] & Impure =
+        use Result.flatMap;
+        let pb      = System/Process.newProcessBuilder(args.cmd, args.args);
         let* proc   = System/Process.start(pb);
-        let* str    = System/Process.getInput(proc, Text/Charset.utf_8());
-        let _       = Console.printLine(str);
-        let* exitCode   = System/Process.waitFor(proc);
-        Ok(exitCode)
-    
+        let* resp   = System/Process.getInput(proc, args.charset);
+        let* code   = System/Process.waitFor(proc);
+        Ok({exitCode = code, processResponse = resp}) 
+
 }

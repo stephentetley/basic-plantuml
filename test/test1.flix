@@ -1,5 +1,5 @@
 use Data.{RoseTree};
-use Data.RoseTree.{RoseTree};
+use Data.RoseTree.{Node};
 use PlantUml/Puml.{Puml};
 use PlantUml/Creole.{Creole};
 
@@ -26,14 +26,14 @@ def tree1(): Puml =
         <!> endsalt()
 
 def tree2(): RoseTree[String] = 
-    let leaf = x1 -> RoseTree(x1, Nil);
-    let node = (x1, xs) -> RoseTree(x1, xs);
+    let leaf = x1 -> Node(x1, Nil);
+    let node = (x1, xs) -> Node(x1, xs);
     node("/home", leaf("/stephen") :: Nil)
 
 
 def tree3(): RoseTree[{name :: String, props :: String, size :: Int32}] = 
-    let leaf = x1 -> RoseTree(x1, Nil);
-    let node = (x1, kids) -> RoseTree(x1, kids);
+    let leaf = x1 -> Node(x1, Nil);
+    let node = (x1, kids) -> Node(x1, kids);
     node({name = "/home", props = "rwx", size = 145423 }, leaf({name = "/stephen", props = "rwx", size = 1200}) :: Nil)
 
 def cellPrint(x: {name :: String, props :: String, size :: Int32}): List[Creole] = 

@@ -19,8 +19,7 @@ namespace PlantUml/SaltTreeTable {
 
     
     use Data.{RoseTree, RoseForest};
-    use Data.RoseTree.{RoseTree};
-    use Data/RoseTree.{Forest};
+    use Data.RoseTree.{Node};
     use PlantUml/Puml.{Puml};
     use PlantUml/Creole.{Creole};
 
@@ -31,7 +30,7 @@ namespace PlantUml/SaltTreeTable {
         let headers1 = List.map(creole, headers) |> treeTableHeaders;
         let mkPuml = xs -> startsalt() <!> braces(None, 0, tree(headers1 :: xs)) <!> endsalt();
         match x {
-            case RoseTree(label, kids) => { 
+            case Node(label, kids) => { 
                 let root = printTreeTableCells(printer, 1, label);
                 saltTreeTableKids(printer, 2, kids, ks -> mkPuml(root :: ks))
             }
@@ -46,11 +45,11 @@ namespace PlantUml/SaltTreeTable {
         use PlantUml/Puml.{vsep, creole};
         use PlantUml/Puml.{<!>};
         match node {
-            case RoseTree(x1, Nil) => { 
+            case Node(x1, Nil) => { 
                 let ans = printTreeTableCells(printer, level, x1);
                 k(ans)
             }
-            case RoseTree(label, kids) => { 
+            case Node(label, kids) => { 
                 let ans = printTreeTableCells(printer, level, label);
                 saltTreeTableKids(printer, level + 1, kids, vs -> k(ans <!> vsep(vs)))
             }

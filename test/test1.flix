@@ -17,12 +17,12 @@ def main(_args: Array[String]): Int32 & Impure =
 
 
 def tree1(): Puml = 
-    use PlantUml/Puml.{startsalt, endsalt, braces, text, vsep, treeNode, tree};
+    use PlantUml/Puml.{startsalt, endsalt, block, text, vsep, treeNode, tree};
     use PlantUml/Puml.{<!>};
     let n1 = treeNode(1, text("/home"));
     let n2 = treeNode(2, text("/stephen"));
     startsalt() 
-        <!> braces(None, 0, tree(n1 :: n2 :: Nil))
+        <!> block(None, 0, tree(n1 :: n2 :: Nil))
         <!> endsalt()
 
 def tree2(): RoseTree[String] = 

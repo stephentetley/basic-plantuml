@@ -148,7 +148,7 @@ namespace PlantUml/Puml {
         repeatString(level, "+") <<>> label
 
     pub def tree(nodes: List[Puml]): Puml = 
-        braces(Some("T"), 1, vsep(nodes))
+        block(Some("T"), 1, vsep(nodes))
 
     pub def treeTableHeaders(headers: List[Puml]): Puml = 
         text("+") <> hsep(punctuate(text(" |"), headers))
@@ -157,14 +157,22 @@ namespace PlantUml/Puml {
         repeatString(level, "+") <<>> hsep(punctuate(text(" |"), cells))
 
     pub def treeTable(nodes: List[Puml]): Puml = 
-        braces(Some("T"), 1, vsep(nodes))
+        block(Some("T"), 1, vsep(nodes))
 
-    pub def startwbs(): Puml = Text("@startwbs")
-    pub def endwbd(): Puml = Text("@endwbs")
+    pub def startwbs(): Puml = text("@startwbs")
+    pub def endwbd(): Puml = text("@endwbs")
 
-    pub def braces(symbol: Option[String], indent: Int32, body: Puml): Puml = match symbol { 
+
+    // TODO rename to `block`
+    pub def block(symbol: Option[String], indent: Int32, body: Puml): Puml = match symbol { 
         case Some(s1) => group(indent, text("{${s1}") <!> body) <!> text("}")
-        case None => group(indent, text("{") <!> body) <!> text("}")
+        case None     => group(indent, text("{") <!> body) <!> text("}")
     }
+
+    // Field modifier
+    pub def field(body: Puml): Puml = text("{field}") <<>> body
+
+    // Method modifier
+    pub def method(body: Puml): Puml = text("{method}") <<>> body
 
 }

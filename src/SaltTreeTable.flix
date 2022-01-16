@@ -25,10 +25,10 @@ namespace PlantUml/SaltTreeTable {
 
     
     pub def treeTable(printer: {printCells :: a -> List[Creole]}, headers: List[Creole], x: RoseTree[a]): Puml = 
-        use PlantUml/Puml.{startsalt, endsalt, creole, braces, treeTableHeaders, tree};
+        use PlantUml/Puml.{startsalt, endsalt, creole, block, treeTableHeaders, tree};
         use PlantUml/Puml.{<!>};
         let headers1 = List.map(creole, headers) |> treeTableHeaders;
-        let mkPuml = xs -> startsalt() <!> braces(None, 0, tree(headers1 :: xs)) <!> endsalt();
+        let mkPuml = xs -> startsalt() <!> block(None, 0, tree(headers1 :: xs)) <!> endsalt();
         match x {
             case Node(label, kids) => { 
                 let root = printTreeTableCells(printer, 1, label);

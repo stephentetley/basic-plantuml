@@ -26,9 +26,9 @@ namespace PlantUml/SaltTree {
     /// Note - it seems like "new style" colours are not supported in Creole
 
     pub def tree(printer: {printLabel :: a -> Creole}, x: RoseTree[a]): Puml = 
-        use PlantUml/Puml.{startsalt, endsalt, braces, tree};
+        use PlantUml/Puml.{startsalt, endsalt, block, tree};
         use PlantUml/Puml.{<!>};
-        let mkPuml = xs -> startsalt() <!> braces(None, 0, tree(xs)) <!> endsalt();
+        let mkPuml = xs -> startsalt() <!> block(None, 0, tree(xs)) <!> endsalt();
         match x {
             case Node(x1, kids) => { 
                 let root = printTreeLabel(printer, 1, x1);

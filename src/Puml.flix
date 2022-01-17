@@ -144,20 +144,7 @@ namespace PlantUml/Puml {
     pub def startsalt(): Puml = Text("@startsalt")
     pub def endsalt(): Puml = Text("@endsalt")
 
-    pub def treeNode(level: Int32, label: Puml): Puml = 
-        repeatString(level, "+") <<>> label
 
-    pub def tree(nodes: List[Puml]): Puml = 
-        block(Some("T"), 1, vsep(nodes))
-
-    pub def treeTableHeaders(headers: List[Puml]): Puml = 
-        text("+") <> hsep(punctuate(text(" |"), headers))
-
-    pub def treeTableNode(level: Int32, cells: List[Puml]): Puml = 
-        repeatString(level, "+") <<>> hsep(punctuate(text(" |"), cells))
-
-    pub def treeTable(nodes: List[Puml]): Puml = 
-        block(Some("T"), 1, vsep(nodes))
 
     pub def startwbs(): Puml = text("@startwbs")
     pub def endwbd(): Puml = text("@endwbs")

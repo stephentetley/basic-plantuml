@@ -21,14 +21,23 @@ namespace PlantUml/SaltTreeTable {
     use Data.{RoseTree, RoseForest};
     use Data.RoseTree.{Node};
     use PlantUml/Puml.{Puml};
+    use PlantUml/Puml.{<<>>, <>, <!>};
+    use PlantUml/Puml.{block, text, repeatString, creole, hsep, vsep, punctuate};
     use PlantUml/Creole.{Creole};
 
     
-    pub def treeTable(printer: {printCells :: a -> List[Creole]}, headers: List[Creole], x: RoseTree[a]): Puml = 
-        use PlantUml/Puml.{startsalt, endsalt, creole, block, treeTableHeaders, tree};
-        use PlantUml/Puml.{<!>};
+    pub def treeTableHeaders(headers: List[Puml]): Puml = 
+        text("+") <> hsep(punctuate(text(" |"), headers))
+
+    pub def treeTableNode(level: Int32, cells: List[Puml]): Puml = 
+        repeatString(level, "+") <<>> hsep(punctuate(text(" |"), cells))
+
+
+
+    pub def printTreeTable(printer: {printCells :: a -> List[Creole]}, headers: List[Creole], x: RoseTree[a]): Puml = 
+        use PlantUml/Puml.{startsalt, endsalt};
         let headers1 = List.map(creole, headers) |> treeTableHeaders;
-        let mkPuml = xs -> startsalt() <!> block(None, 0, tree(headers1 :: xs)) <!> endsalt();
+        let mkPuml = xs -> startsalt() <!> block(None, 0, PlantUml/SaltTree.saltTree(headers1 :: xs)) <!> endsalt();
         match x {
             case Node(label, kids) => { 
                 let root = printTreeTableCells(printer, 1, label);
@@ -37,13 +46,10 @@ namespace PlantUml/SaltTreeTable {
         }
 
     def printTreeTableCells(printer: {printCells :: a -> List[Creole]}, level: Int32, node: a): Puml = 
-        use PlantUml/Puml.{treeTableNode, creole};
         let mkCells = printer.printCells;
         treeTableNode(level, List.map(creole, mkCells(node)))
 
     def saltTreeTableNode(printer: {printCells :: a -> List[Creole]}, level: Int32, node: RoseTree[a], k: Puml -> Puml): Puml = 
-        use PlantUml/Puml.{vsep, creole};
-        use PlantUml/Puml.{<!>};
         match node {
             case Node(x1, Nil) => { 
                 let ans = printTreeTableCells(printer, level, x1);

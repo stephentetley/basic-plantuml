@@ -88,14 +88,14 @@ namespace PlantUml/ClassDiagram {
 
     pub def underscoreSep(): Puml = text("__")
 
-    def sepTitle(sep: Puml, title: Puml): Puml = sep <<>> title <<>> sep
+    def titleSeparator(sep: Puml, title: Puml): Puml = sep <<>> title <<>> sep
 
-    pub def dashTitle(title: Puml): Puml = sepTitle(dashSep(), title)
+    pub def dashTitle(title: Puml): Puml = titleSeparator(dashSep(), title)
 
-    pub def dotTitle(title: Puml): Puml = sepTitle(dotSep(), title)
+    pub def dotTitle(title: Puml): Puml = titleSeparator(dotSep(), title)
 
-    pub def equalsTitle(title: Puml): Puml = sepTitle(equalsSep(), title)
+    pub def equalsTitle(title: Puml): Puml = titleSeparator(equalsSep(), title)
     
-    pub def underscoreTitle(title: Puml): Puml = sepTitle(underscoreSep(), title)
+    pub def underscoreTitle(title: Puml): Puml = titleSeparator(underscoreSep(), title)
 
 }

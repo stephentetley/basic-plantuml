@@ -21,14 +21,24 @@ namespace PlantUml/SaltTree {
     use Data.{RoseTree, RoseForest};
     use Data.RoseTree.{Node};
     use PlantUml/Puml.{Puml};
+    use PlantUml/Puml.{block, repeatString, creole, vsep};
+    use PlantUml/Puml.{<<>>, <!>};
     use PlantUml/Creole.{Creole};
 
     /// Note - it seems like "new style" colours are not supported in Creole
 
-    pub def tree(printer: {printLabel :: a -> Creole}, x: RoseTree[a]): Puml = 
-        use PlantUml/Puml.{startsalt, endsalt, block, tree};
-        use PlantUml/Puml.{<!>};
-        let mkPuml = xs -> startsalt() <!> block(None, 0, tree(xs)) <!> endsalt();
+
+
+    pub def treeNode(level: Int32, label: Puml): Puml = 
+        repeatString(level, "+") <<>> label
+
+    pub def saltTree(nodes: List[Puml]): Puml = 
+        block(Some("T"), 1, vsep(nodes))
+
+
+    pub def printTree(printer: {printLabel :: a -> Creole}, x: RoseTree[a]): Puml = 
+        use PlantUml/Puml.{startsalt, endsalt};
+        let mkPuml = xs -> startsalt() <!> block(None, 0, saltTree(xs)) <!> endsalt();
         match x {
             case Node(x1, kids) => { 
                 let root = printTreeLabel(printer, 1, x1);
@@ -36,14 +46,12 @@ namespace PlantUml/SaltTree {
             }
         }
 
+
     def printTreeLabel(printer: {printLabel :: a -> Creole}, level: Int32, node: a): Puml = 
-        use PlantUml/Puml.{treeNode, creole};
         let mkLabel = printer.printLabel;
         treeNode(level, creole(mkLabel(node)))
 
     def saltTreeNode(printer: {printLabel :: a -> Creole}, level: Int32, node: RoseTree[a], k: Puml -> Puml): Puml = 
-        use PlantUml/Puml.{vsep, creole};
-        use PlantUml/Puml.{<!>};
         match node {
             case Node(label, Nil) => { 
                 let ans = printTreeLabel(printer, level, label);

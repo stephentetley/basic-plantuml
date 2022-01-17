@@ -139,15 +139,10 @@ namespace PlantUml/Puml {
     pub def startuml(): Puml = Text("@startuml")
     pub def enduml(): Puml = Text("@enduml")
 
-    /// TODO - Salt and wbs etc. in separate namespaces?
 
     pub def startsalt(): Puml = Text("@startsalt")
     pub def endsalt(): Puml = Text("@endsalt")
 
-
-
-    pub def startwbs(): Puml = text("@startwbs")
-    pub def endwbd(): Puml = text("@endwbs")
 
 
     // TODO rename to `block`

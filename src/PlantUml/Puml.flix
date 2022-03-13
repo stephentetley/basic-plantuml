@@ -43,23 +43,23 @@ namespace PlantUml/Puml {
 
     def renderHelper(doc: Puml): String & Impure = 
         let sb = StringBuilder.new();
-        appendPuml!(sb, 0, doc);
+        appendPuml!(0, doc, sb);
         StringBuilder.toString(sb)
 
-    def appendPuml!(sb: StringBuilder, indent: Int32, doc: Puml): Unit & Impure = match doc {
+    def appendPuml!(indent: Int32, doc: Puml, sb: StringBuilder): Unit & Impure = match doc {
         case Empty => () as & Impure
-        case Text(s) => StringBuilder.appendString!(sb, s)
-        case Creole(c) => PlantUml/Creole.appendCreole!(sb, c)
-        case Group(i, d1) => appendPuml!(sb, indent + i, d1)
+        case Text(s) => StringBuilder.appendString!(s, sb)
+        case Creole(c) => PlantUml/Creole.appendCreole!(c, sb)
+        case Group(i, d1) => appendPuml!(indent + i, d1, sb)
         case HCat(d1, d2) => { 
-            appendPuml!(sb, indent, d1);
-            appendPuml!(sb, indent, d2)
+            appendPuml!(indent, d1, sb);
+            appendPuml!(indent, d2, sb)
         }
         case VCat(d1, d2) => { 
-            appendPuml!(sb, indent, d1);
+            appendPuml!(indent, d1, sb);
             StringBuilder.appendLineSeparator!(sb);
-            StringBuilder.appendString!(sb, String.repeat(indent, " "));
-            appendPuml!(sb, indent, d2)
+            StringBuilder.appendString!(String.repeat(indent, " "), sb);
+            appendPuml!(indent, d2, sb)
         }
     }
     

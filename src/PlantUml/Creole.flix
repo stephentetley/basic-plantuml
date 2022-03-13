@@ -30,19 +30,19 @@ namespace PlantUml/Creole {
 
     def renderHelper(doc: Creole): String & Impure = 
         let sb = StringBuilder.new();
-        appendCreole!(sb, doc);
+        appendCreole!(doc, sb);
         StringBuilder.toString(sb)
 
-    pub def appendCreole!(sb: StringBuilder, doc: Creole): Unit & Impure = match doc {
-        case Text(s) => StringBuilder.appendString!(sb, s) 
+    pub def appendCreole!(doc: Creole, sb: StringBuilder): Unit & Impure = match doc {
+        case Text(s) => StringBuilder.appendString!(s, sb) 
         case HCat(d1, d2) => { 
-            appendCreole!(sb, d1);
-            appendCreole!(sb, d2)
+            appendCreole!(d1, sb);
+            appendCreole!(d2, sb)
         }
         case VCat(d1, d2) => { 
-            appendCreole!(sb, d1);
+            appendCreole!(d1, sb);
             StringBuilder.appendLineSeparator!(sb);
-            appendCreole!(sb, d2)
+            appendCreole!(d2, sb)
         }
     }
 

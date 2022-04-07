@@ -33,7 +33,7 @@ namespace PlantUml/Extras {
         };
         let args1 = 
             { cmd = args.java
-            , args = ["-jar", "${args.plantUmlJar}", tfmt, "${args.sourceFile}"]
+            , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
             , charset = Text/Charset.utf_8()
             };
         process(args1) |> Result.map(x1 -> x1.exitCode)
@@ -41,7 +41,7 @@ namespace PlantUml/Extras {
     /// TODO - to add to System/Process...
     pub type alias ProcessArgs = 
         { cmd :: String
-        , args :: Array[String]
+        , args :: List[String]
         , charset :: Text.Charset
         }
 

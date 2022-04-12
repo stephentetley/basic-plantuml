@@ -20,9 +20,9 @@ namespace PlantUml/Extras {
 
     pub type alias PlantUmlArgs = 
         { java :: String        /// "java" / "java.exe"
-        , plantUmlJar :: System.FilePath
+        , plantUmlJar :: FlixSandbox/System.FilePath
         , format :: Option[String]
-        , sourceFile :: System.FilePath 
+        , sourceFile :: FlixSandbox/System.FilePath 
         }
 
 
@@ -34,7 +34,7 @@ namespace PlantUml/Extras {
         let args1 = 
             { cmd = args.java
             , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
-            , charset = Text/Charset.utf_8()
+            , charset = FlixSandbox/Text/Charset.utf_8()
             };
         process(args1) |> Result.map(x1 -> x1.exitCode)
 
@@ -42,16 +42,16 @@ namespace PlantUml/Extras {
     pub type alias ProcessArgs = 
         { cmd :: String
         , args :: List[String]
-        , charset :: Text.Charset
+        , charset :: FlixSandbox/Text.Charset
         }
 
 
     pub def process(args: ProcessArgs): Result[{exitCode :: Int32, processResponse :: String}, String] & Impure =
         use Result.flatMap;
-        let pb      = System/Process.newProcessBuilder(args.cmd, args.args);
-        let* proc   = System/Process.start(pb);
-        let* resp   = System/Process.getInput(proc, args.charset);
-        let* code   = System/Process.waitFor(proc);
+        let pb      = FlixSandbox/System/Process.newProcessBuilder(args.cmd, args.args);
+        let* proc   = FlixSandbox/System/Process.start(pb);
+        let* resp   = FlixSandbox/System/Process.getInput(proc, args.charset);
+        let* code   = FlixSandbox/System/Process.waitFor(proc);
         Ok({exitCode = code, processResponse = resp}) 
 
 }

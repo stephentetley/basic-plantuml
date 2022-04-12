@@ -32,11 +32,11 @@ namespace PlantUml/Puml {
     ///
     /// Render `doc` to a file.
     ///
-    pub def writePuml(path: System.FilePath, cs: Text.Charset, doc: Puml): Result[Unit, String] & Impure =
+    pub def writePuml(path: FlixSandbox/System.FilePath, cs: FlixSandbox/Text.Charset, doc: Puml): Result[Unit, String] & Impure =
         use Result.flatMap;
-        use System/IO.WriteMode.{Create};
+        use FlixSandbox/System/IO.WriteMode.{Create};
         let str = render(doc);
-        System/IO.writeFileWith({path = path, charset = cs, mode = Create}, str)
+        FlixSandbox/System/IO.writeFileWith({path = path, charset = cs, mode = Create}, str)
 
     pub def render(doc: Puml): String = 
         renderHelper(doc) as & Pure

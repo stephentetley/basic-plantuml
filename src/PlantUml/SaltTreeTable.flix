@@ -18,8 +18,8 @@
 namespace PlantUml/SaltTreeTable {
 
     
-    use Data.{RoseTree, RoseForest};
-    use Data.RoseTree.{Node};
+    use FlixSandbox.{RoseTree, RoseForest};
+    use FlixSandbox.RoseTree.{Node};
     use PlantUml/Puml.{Puml};
     use PlantUml/Puml.{<<>>, <>, <!>};
     use PlantUml/Puml.{block, text, repeatString, creole, hsep, vsep, punctuate};

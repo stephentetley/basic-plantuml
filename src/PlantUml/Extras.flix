@@ -36,22 +36,6 @@ namespace PlantUml/Extras {
             , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
             , charset = FlixSandbox/Text/Charset.utf_8()
             };
-        process(args1) |> Result.map(x1 -> x1.exitCode)
-
-    /// TODO - to add to System/Process...
-    pub type alias ProcessArgs = 
-        { cmd :: String
-        , args :: List[String]
-        , charset :: FlixSandbox/Text.Charset
-        }
-
-
-    pub def process(args: ProcessArgs): Result[{exitCode :: Int32, processResponse :: String}, String] & Impure =
-        use Result.flatMap;
-        let pb      = FlixSandbox/System/Process.newProcessBuilder(args.cmd, args.args);
-        let* proc   = FlixSandbox/System/Process.start(pb);
-        let* resp   = FlixSandbox/System/Process.getInput(proc, args.charset);
-        let* code   = FlixSandbox/System/Process.waitFor(proc);
-        Ok({exitCode = code, processResponse = resp}) 
+        FlixSandbox/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
 
 }

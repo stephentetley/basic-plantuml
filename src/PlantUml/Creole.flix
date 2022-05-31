@@ -26,14 +26,13 @@ namespace PlantUml/Creole {
 
 
     pub def render(doc: Creole): String = 
-        renderHelper(doc) as & Pure
+        region r {
+            let sb = new StringBuilder(r);
+            appendCreole!(doc, sb);
+            StringBuilder.toString(sb)
+        }
 
-    def renderHelper(doc: Creole): String & Impure = 
-        let sb = StringBuilder.new();
-        appendCreole!(doc, sb);
-        StringBuilder.toString(sb)
-
-    pub def appendCreole!(doc: Creole, sb: StringBuilder): Unit & Impure = match doc {
+    pub def appendCreole!(doc: Creole, sb: StringBuilder[r]): Unit \ Write(r) = match doc {
         case Text(s) => StringBuilder.appendString!(s, sb) 
         case HCat(d1, d2) => { 
             appendCreole!(d1, sb);

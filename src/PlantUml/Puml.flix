@@ -39,17 +39,16 @@ namespace PlantUml/Puml {
         FlixSandbox/System/IO.writeFileWith({path = path, charset = cs, mode = Create}, str)
 
     pub def render(doc: Puml): String = 
-        renderHelper(doc) as & Pure
+        region r {
+            let sb = new StringBuilder(r);
+            appendPuml!(0, doc, sb);
+            StringBuilder.toString(sb)
+        }
 
-    def renderHelper(doc: Puml): String & Impure = 
-        let sb = StringBuilder.new();
-        appendPuml!(0, doc, sb);
-        StringBuilder.toString(sb)
-
-    def appendPuml!(indent: Int32, doc: Puml, sb: StringBuilder): Unit & Impure = match doc {
-        case Empty => () as & Impure
-        case Text(s) => StringBuilder.appendString!(s, sb)
-        case Creole(c) => PlantUml/Creole.appendCreole!(c, sb)
+    def appendPuml!(indent: Int32, doc: Puml, sb: StringBuilder[r]): Unit \ Write(r) = match doc {
+        case Empty        => ()
+        case Text(s)      => StringBuilder.appendString!(s, sb)
+        case Creole(c)    => PlantUml/Creole.appendCreole!(c, sb)
         case Group(i, d1) => appendPuml!(indent + i, d1, sb)
         case HCat(d1, d2) => { 
             appendPuml!(indent, d1, sb);

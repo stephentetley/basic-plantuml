@@ -34,7 +34,7 @@ namespace PlantUml/Extras {
         let args1 = 
             { cmd = args.java
             , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
-            , charset = FlixSandbox/Text/Charset.utf_8()
+            , charset = Text/Charset.utf_8()
             };
         FlixSandbox/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
 

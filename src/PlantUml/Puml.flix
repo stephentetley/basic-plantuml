@@ -17,6 +17,10 @@
     
 namespace PlantUml/Puml {
 
+
+    use Interop/System.FilePath;
+    use Interop/Text.Charset;
+
     use PlantUml/Creole.Creole;
 
     /// Track indentation with Group...
@@ -32,7 +36,7 @@ namespace PlantUml/Puml {
     ///
     /// Render `doc` to a file.
     ///
-    pub def writePuml(path: FlixSandbox/System.FilePath, cs: Text.Charset, doc: Puml): Result[Unit, String] & Impure =
+    pub def writePuml(path: FilePath, cs: Charset, doc: Puml): Result[Unit, String] & Impure =
         use Result.flatMap;
         use FlixSandbox/System/IO.WriteMode.{Create};
         let str = render(doc);

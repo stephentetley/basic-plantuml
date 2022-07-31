@@ -18,11 +18,13 @@
     
 namespace PlantUml/Extras {
 
+    use Interop/System.FilePath;
+
     pub type alias PlantUmlArgs = 
         { java :: String        /// "java" / "java.exe"
-        , plantUmlJar :: FlixSandbox/System.FilePath
+        , plantUmlJar :: FilePath
         , format :: Option[String]
-        , sourceFile :: FlixSandbox/System.FilePath 
+        , sourceFile :: FilePath 
         }
 
 
@@ -34,8 +36,8 @@ namespace PlantUml/Extras {
         let args1 = 
             { cmd = args.java
             , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
-            , charset = Text/Charset.utf_8()
+            , charset = Interop/Text/Charset.utf_8()
             };
-        FlixSandbox/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
+        Interop/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
 
 }

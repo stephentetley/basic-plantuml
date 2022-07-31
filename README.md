@@ -1,12 +1,21 @@
 # basic-plantuml
 
-Small library to generate PlantUml files.
+Small library to generate PlantUml files from Flix.
+
+License: Apache 2.0
 
 Dependencies:
 
 https://github.com/stephentetley/flix-sandbox
-https://github.com/stephentetley/charset-locale
-https://github.com/stephentetley/collection-interop
+
+https://github.com/stephentetley/interop-process
+
+https://github.com/stephentetley/interop-filepath
+
+https://github.com/stephentetley/interop-charset-locale
+
+https://github.com/stephentetley/interop-collections
+
 
 Apache Commons IO
 

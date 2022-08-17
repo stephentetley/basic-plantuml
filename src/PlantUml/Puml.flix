@@ -18,8 +18,8 @@
 namespace PlantUml/Puml {
 
 
-    use Interop/System.FilePath;
-    use Interop/Text.Charset;
+    use Basis/System.FilePath;
+    use Basis/Text.Charset;
 
     use PlantUml/Creole.Creole;
 
@@ -38,9 +38,9 @@ namespace PlantUml/Puml {
     ///
     pub def writePuml(path: FilePath, cs: Charset, doc: Puml): Result[Unit, String] & Impure =
         use Result.flatMap;
-        use FlixSandbox/System/IO.WriteMode.{Create};
+        let opts = Basis/System/StandardOpenOption/StandardOpenOption.Create :: Nil;
         let str = render(doc);
-        FlixSandbox/System/IO.writeFileWith({path = path, charset = cs, mode = Create}, str)
+        Basis/System/Files.writeStringWithCharset(path, cs, opts, str)
 
     pub def render(doc: Puml): String = 
         region r {

@@ -1,8 +1,8 @@
 
 namespace Test1 {
 
-    use FlixSandbox.{RoseTree};
-    use FlixSandbox.RoseTree.{Node};
+    use DataLib.{RoseTree};
+    use DataLib.RoseTree.{Node};
     use PlantUml/Puml.{Puml};
     use PlantUml/Creole.{Creole};
 

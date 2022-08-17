@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-/// Depends on `flix-sandbox`
     
 namespace PlantUml/Extras {
 
-    use Interop/System.FilePath;
+    use Basis/System.FilePath;
 
     pub type alias PlantUmlArgs = 
         { java :: String        /// "java" / "java.exe"
@@ -36,8 +35,8 @@ namespace PlantUml/Extras {
         let args1 = 
             { cmd = args.java
             , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
-            , charset = Interop/Text/Charset.utf_8()
+            , charset = Basis/Text/Charset.utf_8()
             };
-        Interop/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
+        Basis/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
 
 }

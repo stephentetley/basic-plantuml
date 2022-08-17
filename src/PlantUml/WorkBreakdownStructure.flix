@@ -18,8 +18,8 @@
 namespace PlantUml/WorkBreakdownStructure {
 
     
-    use FlixSandbox.{RoseTree, RoseForest};
-    use FlixSandbox.RoseTree.{Node};
+    use DataLib.{RoseTree, RoseForest};
+    use DataLib.RoseTree.{Node};
     use PlantUml/Puml.{Puml};
     use PlantUml/Puml.{text, repeatString, vsep};
     use PlantUml/Puml.{<<>>, <!>};

@@ -18,8 +18,8 @@
 namespace PlantUml/Puml {
 
 
-    use Basis/System.FilePath;
-    use Basis/Text.Charset;
+    use Basis/NIO/File.Path;
+    use Basis/NIO/Charset.Charset;
 
     use PlantUml/Creole.Creole;
 
@@ -36,11 +36,11 @@ namespace PlantUml/Puml {
     ///
     /// Render `doc` to a file.
     ///
-    pub def writePuml(path: FilePath, cs: Charset, doc: Puml): Result[Unit, String] & Impure =
+    pub def writePuml(path: Path, cs: Charset, doc: Puml): Result[Unit, String] & Impure =
         use Result.flatMap;
-        let opts = Basis/System/StandardOpenOption/StandardOpenOption.Create :: Nil;
+        let opts = Basis/NIO/File/StandardOpenOption/StandardOpenOption.Create :: Nil;
         let str = render(doc);
-        Basis/System/Files.writeStringWithCharset(path, cs, opts, str)
+        Basis/NIO/File/Files.writeStringWithCharset!(path, cs, opts, str)
 
     pub def render(doc: Puml): String = 
         region r {

@@ -17,13 +17,13 @@
     
 namespace PlantUml/Extras {
 
-    use Basis/System.FilePath;
+    use Basis/NIO/File.Path;
 
     pub type alias PlantUmlArgs = 
         { java :: String        /// "java" / "java.exe"
-        , plantUmlJar :: FilePath
+        , plantUmlJar :: Path
         , format :: Option[String]
-        , sourceFile :: FilePath 
+        , sourceFile :: Path 
         }
 
 
@@ -35,8 +35,8 @@ namespace PlantUml/Extras {
         let args1 = 
             { cmd = args.java
             , args = "-jar" :: "${args.plantUmlJar}" :: tfmt :: "${args.sourceFile}" :: Nil
-            , charset = Basis/Text/Charset.utf_8()
+            , charset = Basis/NIO/Charset/Charset.utf_8()
             };
-        Basis/System/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
+        Basis/Lang/Process.processWithExitCode(args1) |> Result.map(x1 -> x1.exitCode)
 
 }

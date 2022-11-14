@@ -36,7 +36,7 @@ namespace PlantUml/SaltTree {
         block(Some("T"), 1, vsep(nodes))
 
 
-    pub def printTree(printer: {printLabel :: a -> Creole}, x: RoseTree[a]): Puml = 
+    pub def printTree(printer: {printLabel = a -> Creole}, x: RoseTree[a]): Puml = 
         use PlantUml/Puml.{startsalt, endsalt};
         let mkPuml = xs -> startsalt() <!> block(None, 0, saltTree(xs)) <!> endsalt();
         match x {
@@ -47,11 +47,11 @@ namespace PlantUml/SaltTree {
         }
 
 
-    def printTreeLabel(printer: {printLabel :: a -> Creole}, level: Int32, node: a): Puml = 
+    def printTreeLabel(printer: {printLabel = a -> Creole}, level: Int32, node: a): Puml = 
         let mkLabel = printer.printLabel;
         treeNode(level, creole(mkLabel(node)))
 
-    def saltTreeNode(printer: {printLabel :: a -> Creole}, level: Int32, node: RoseTree[a], k: Puml -> Puml): Puml = 
+    def saltTreeNode(printer: {printLabel = a -> Creole}, level: Int32, node: RoseTree[a], k: Puml -> Puml): Puml = 
         match node {
             case Node(label, Nil) => { 
                 let ans = printTreeLabel(printer, level, label);
@@ -63,7 +63,7 @@ namespace PlantUml/SaltTree {
             }
         }   
 
-    def saltTreeKids(printer: {printLabel :: a -> Creole}, level: Int32, nodes: RoseForest[a], k: List[Puml] -> Puml): Puml = match nodes { 
+    def saltTreeKids(printer: {printLabel = a -> Creole}, level: Int32, nodes: RoseForest[a], k: List[Puml] -> Puml): Puml = match nodes { 
         case Nil => k(Nil)
         case x :: rs => 
             saltTreeNode(printer, level, x, v1 -> saltTreeKids(printer, level, rs, vs -> k(v1 :: vs)))

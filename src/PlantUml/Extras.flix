@@ -20,10 +20,10 @@ namespace PlantUml/Extras {
     use Basis/NIO/File.Path;
 
     pub type alias PlantUmlArgs = 
-        { java :: String        /// "java" / "java.exe"
-        , plantUmlJar :: Path
-        , format :: Option[String]
-        , sourceFile :: Path 
+        { java = String        /// "java" / "java.exe"
+        , plantUmlJar = Path
+        , format = Option[String]
+        , sourceFile = Path 
         }
 
 

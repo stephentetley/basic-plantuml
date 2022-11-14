@@ -36,12 +36,12 @@ namespace Test1 {
         node("/home", leaf("/stephen") :: Nil)
 
 
-    def tree3(): RoseTree[{name :: String, props :: String, size :: Int32}] = 
+    def tree3(): RoseTree[{name = String, props = String, size = Int32}] = 
         let leaf = x1 -> Node(x1, Nil);
         let node = (x1, kids) -> Node(x1, kids);
         node({name = "/home", props = "rwx", size = 145423 }, leaf({name = "/stephen", props = "rwx", size = 1200}) :: Nil)
 
-    def cellPrint(x: {name :: String, props :: String, size :: Int32}): List[Creole] = 
+    def cellPrint(x: {name = String, props = String, size = Int32}): List[Creole] = 
         use PlantUml/Creole.{text, asText}; 
         text(x.name) :: text(x.props) :: asText(x.size) :: Nil
 

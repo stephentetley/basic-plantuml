@@ -35,7 +35,7 @@ namespace PlantUml/WorkBreakdownStructure {
 
     
 
-    pub def printTree(printer: {printLabel :: a -> Puml}, x: RoseTree[a]): Puml = 
+    pub def printTree(printer: {printLabel = a -> Puml}, x: RoseTree[a]): Puml = 
         let mkPuml = xs -> startwbs() <!> vsep(xs) <!> endwbs();
         match x {
             case Node(x1, kids) => { 
@@ -44,11 +44,11 @@ namespace PlantUml/WorkBreakdownStructure {
             }
         }
 
-    def printTreeLabel(printer: {printLabel :: a -> Puml}, level: Int32, node: a): Puml = 
+    def printTreeLabel(printer: {printLabel = a -> Puml}, level: Int32, node: a): Puml = 
         let mkLabel = printer.printLabel;
         treeNode(level, mkLabel(node))
 
-    def wbsTreeNode(printer: {printLabel :: a -> Puml}, level: Int32, node: RoseTree[a], k: Puml -> Puml): Puml = 
+    def wbsTreeNode(printer: {printLabel = a -> Puml}, level: Int32, node: RoseTree[a], k: Puml -> Puml): Puml = 
         match node {
             case Node(label, Nil) => { 
                 let ans = printTreeLabel(printer, level, label);
@@ -60,7 +60,7 @@ namespace PlantUml/WorkBreakdownStructure {
             }
         }   
 
-    def wbsTreeKids(printer: {printLabel :: a -> Puml}, level: Int32, nodes: RoseForest[a], k: List[Puml] -> Puml): Puml = match nodes { 
+    def wbsTreeKids(printer: {printLabel = a -> Puml}, level: Int32, nodes: RoseForest[a], k: List[Puml] -> Puml): Puml = match nodes { 
         case Nil => k(Nil)
         case x :: rs => 
             wbsTreeNode(printer, level, x, v1 -> wbsTreeKids(printer, level, rs, vs -> k(v1 :: vs)))

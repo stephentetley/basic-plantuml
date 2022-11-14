@@ -38,7 +38,7 @@ namespace PlantUml/Puml {
     ///
     pub def writePuml(path: Path, cs: Charset, doc: Puml): Result[Unit, String] & Impure =
         use Result.flatMap;
-        let opts = Basis/NIO/File/StandardOpenOption/StandardOpenOption.Create :: Nil;
+        let opts = List.map(Basis/NIO/File/StandardOpenOption.toOpenOption, Basis/NIO/File/StandardOpenOption/StandardOpenOption.Create :: Nil);
         let str = render(doc);
         Basis/NIO/File/Files.writeStringWithCharset!(path, cs, opts, str)
 

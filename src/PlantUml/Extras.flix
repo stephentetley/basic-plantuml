@@ -27,7 +27,7 @@ namespace PlantUml/Extras {
         }
 
 
-    pub def execPlantUml(args: PlantUmlArgs): Result[Int32, String] & Impure = 
+    pub def execPlantUml(args: PlantUmlArgs): Result[String, Int32] \ IO = 
         let tfmt    = match args.format { 
             case Some(fmt) => "-t${fmt}"
             case None => ""

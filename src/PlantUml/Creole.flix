@@ -17,6 +17,11 @@
     
 namespace PlantUml/Creole {
 
+    use PlantUml/Creole.Creole
+    use PlantUml/Creole.Creole.{
+        Text, HCat, VCat
+    }
+
 
     pub enum Creole {
         case Text(String)
@@ -25,12 +30,11 @@ namespace PlantUml/Creole {
     }
 
 
-    pub def render(doc: Creole): String = 
-        region r {
-            let sb = new StringBuilder(r);
-            appendCreole!(doc, sb);
-            StringBuilder.toString(sb)
-        }
+    pub def render(doc: Creole): String = region rc {
+        let sb = StringBuilder.new(rc);
+        appendCreole!(doc, sb);
+        StringBuilder.toString(sb)
+    }
 
     pub def appendCreole!(doc: Creole, sb: StringBuilder[r]): Unit \ Write(r) = match doc {
         case Text(s) => StringBuilder.appendString!(s, sb) 

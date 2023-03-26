@@ -18,10 +18,13 @@
 namespace PlantUml/Puml {
 
 
-    use Basis/NIO/File.Path;
-    use Basis/NIO/Charset.Charset;
+    use Basis/NIO/File.Path
+    use Basis/NIO/Charset.Charset
 
-    use PlantUml/Creole.Creole;
+    use PlantUml/Creole.Creole
+    use PlantUml/Puml.Puml.{
+        Empty, Group, Text, Creole, HCat, VCat
+    }
 
     /// Track indentation with Group...
     pub enum Puml {
@@ -36,18 +39,17 @@ namespace PlantUml/Puml {
     ///
     /// Render `doc` to a file.
     ///
-    pub def writePuml(path: Path, cs: Charset, doc: Puml): Result[Unit, String] & Impure =
+    pub def writePuml(path: Path, cs: Charset, doc: Puml): Result[String, Unit] \ IO =
         use Result.flatMap;
         let opts = List.map(Basis/NIO/File/StandardOpenOption.toOpenOption, Basis/NIO/File/StandardOpenOption/StandardOpenOption.Create :: Nil);
         let str = render(doc);
         Basis/NIO/File/Files.writeStringWithCharset!(path, cs, opts, str)
 
-    pub def render(doc: Puml): String = 
-        region r {
-            let sb = new StringBuilder(r);
-            appendPuml!(0, doc, sb);
-            StringBuilder.toString(sb)
-        }
+    pub def render(doc: Puml): String = region rc {
+        let sb = StringBuilder.new(rc);
+        appendPuml!(0, doc, sb);
+        StringBuilder.toString(sb)
+    }
 
     def appendPuml!(indent: Int32, doc: Puml, sb: StringBuilder[r]): Unit \ Write(r) = match doc {
         case Empty        => ()
